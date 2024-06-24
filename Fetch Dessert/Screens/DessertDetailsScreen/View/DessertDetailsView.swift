@@ -10,11 +10,13 @@ import SwiftUI
 struct DessertDetailsView: View {
     
     private let dessert: Dessert
+    private let service: DessertService
     @ObservedObject var viewModel: DessertDetailsViewModel
     
-    init(dessert: Dessert) {
+    init(service: DessertService, dessert: Dessert) {
         self.dessert = dessert
-        self.viewModel = DessertDetailsViewModel(dessertID: dessert.id)
+        self.service = service
+        self.viewModel = DessertDetailsViewModel(service: service, dessertID: dessert.id)
     }
     
     var body: some View {
@@ -92,6 +94,6 @@ struct DessertDetailsView: View {
 
 #Preview {
     NavigationStack {
-        DessertDetailsView(dessert: MockData.sampleDessertItem)
+        DessertDetailsView(service: DessertService(), dessert: MockData.sampleDessertItem)
     }
 }

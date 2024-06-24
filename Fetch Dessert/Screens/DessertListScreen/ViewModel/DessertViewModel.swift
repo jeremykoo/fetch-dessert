@@ -11,8 +11,10 @@ import Foundation
 class DessertViewModel: ObservableObject {
     
     @Published var dessertList: [Dessert] = []
+    private let service: DessertService
         
-    init() {
+    init(service: DessertService) {
+        self.service = service
         Task {
             await fetchDessertList()
         }
@@ -20,7 +22,7 @@ class DessertViewModel: ObservableObject {
     
     func fetchDessertList() async {
         do {
-            dessertList = try await DessertService.shared.fetchDessertList()
+            dessertList = try await service.fetchDessertList()
         } catch {
             guard let error = error as? DessertError else { return }
             print("Error: \(error.errorDescription)")

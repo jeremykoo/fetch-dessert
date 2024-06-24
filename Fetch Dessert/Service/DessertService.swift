@@ -8,7 +8,6 @@
 import Foundation
 
 class DessertService {
-    static let shared = DessertService()
     
     private let dessertListURL = "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert"
     private let dessertDetailBaseURL = "https://themealdb.com/api/json/v1/1/lookup.php?i="

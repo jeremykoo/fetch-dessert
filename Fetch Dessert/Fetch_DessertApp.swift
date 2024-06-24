@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct Fetch_DessertApp: App {
+    private let service = DessertService()
+    
     var body: some Scene {
         WindowGroup {
-            DessertListView()
+            DessertListView(service: service)
         }
     }
 }

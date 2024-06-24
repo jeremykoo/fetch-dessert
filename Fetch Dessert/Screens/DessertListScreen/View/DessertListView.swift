@@ -9,8 +9,13 @@ import SwiftUI
 
 struct DessertListView: View {
     @State private var searchText = ""
+    private let service: DessertService
+    @StateObject var viewModel: DessertViewModel
     
-    @StateObject var viewModel = DessertViewModel()
+    init(service: DessertService) {
+        self.service = service
+        self._viewModel = StateObject(wrappedValue: DessertViewModel(service: service))
+    }
     
     var body: some View {
         NavigationStack {
@@ -22,7 +27,7 @@ struct DessertListView: View {
                 }
             }
             .navigationDestination(for: Dessert.self) { dessert in
-                DessertDetailsView(dessert: dessert)
+                DessertDetailsView(service: service, dessert: dessert)
             }
             .navigationTitle("Desserts")
             .searchable(text: $searchText)
@@ -31,5 +36,5 @@ struct DessertListView: View {
 }
 
 #Preview {
-    DessertListView()
+    DessertListView(service: DessertService())
 }
