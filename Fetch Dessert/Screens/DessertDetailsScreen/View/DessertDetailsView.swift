@@ -23,16 +23,10 @@ struct DessertDetailsView: View {
                 Text(details.area ?? "")
                     .font(.callout)
                     .foregroundStyle(.secondary)
-                                
-                AsyncImage(url: URL(string: dessert.thumbnailURL)) { image in
-                    image
-                        .resizable()
-                        .frame(width: 240, height: 200)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 120, height: 90)
-                }
+
+                DessertImageView(urlString: details.thumbnailURL)
+                    .frame(width: 240, height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 12) {
@@ -67,16 +61,10 @@ struct DessertDetailsView: View {
                                 )
                                 .font(.caption)
                                 
-                                AsyncImage(url: URL(string: (viewModel.ingredientImageBaseURL + (details.ingredientsList?[index] ?? "") + ".png"))) { image in
-                                    image
-                                        .resizable()
-                                        .frame(width: 80, height: 80)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .padding(.bottom)
-                                } placeholder: {
-                                    ProgressView()
-                                        .frame(width: 80, height: 80)
-                                }
+                                DessertImageView(urlString: viewModel.ingredientImageBaseURL + (details.ingredientsList?[index] ?? "") + ".png")
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(.bottom)
                             }
                         }
                     }
