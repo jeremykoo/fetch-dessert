@@ -7,9 +7,16 @@
 
 import Foundation
 
+@MainActor
 class DessertViewModel: ObservableObject {
     
-    @Published var dessertList: [DessertItem] = []
+    @Published var dessertList: [Dessert] = []
+        
+    init() {
+        Task {
+            await fetchDessertList()
+        }
+    }
     
     func fetchDessertList() async {
         do {
@@ -19,5 +26,4 @@ class DessertViewModel: ObservableObject {
             print("Error: \(error.errorDescription)")
         }
     }
-    
 }

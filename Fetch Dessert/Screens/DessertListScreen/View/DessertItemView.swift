@@ -8,23 +8,21 @@
 import SwiftUI
 
 struct DessertItemView: View {
-    let item: DessertItem
+    let item: Dessert
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: item.strMealThumb)) { image in
+            AsyncImage(url: URL(string: item.thumbnailURL)) { image in
                 image
                     .resizable()
                     .frame(width: 120, height: 90)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } placeholder: {
                 ProgressView()
-//                Rectangle()
                     .frame(width: 120, height: 90)
-//                    .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             
-            Text(item.strMeal)
+            Text(item.name)
                 .font(.headline)
                 .padding(.leading)
         }

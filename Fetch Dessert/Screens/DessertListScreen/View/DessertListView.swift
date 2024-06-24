@@ -10,12 +10,19 @@ import SwiftUI
 struct DessertListView: View {
     @State private var searchText = ""
     
+    @StateObject var viewModel = DessertViewModel()
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(MockData.dessertItems) { dessertItem in
-                    DessertItemView(item: dessertItem)
+                ForEach(viewModel.dessertList) { dessert in
+                    NavigationLink(value: dessert) {
+                        DessertItemView(item: dessert)
+                    }
                 }
+            }
+            .navigationDestination(for: Dessert.self) { dessert in
+                DessertDetailsView(dessert: dessert)
             }
             .navigationTitle("Desserts")
             .searchable(text: $searchText)
