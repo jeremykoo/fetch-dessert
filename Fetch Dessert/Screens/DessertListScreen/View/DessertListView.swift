@@ -20,7 +20,7 @@ struct DessertListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.dessertList) { dessert in
+                ForEach(searchResults) { dessert in
                     NavigationLink(value: dessert) {
                         DessertItemView(item: dessert)
                     }
@@ -30,7 +30,15 @@ struct DessertListView: View {
                 DessertDetailsView(service: service, dessert: dessert)
             }
             .navigationTitle("Desserts")
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, prompt: "Search for a dessert")
+        }
+    }
+    
+    var searchResults: [Dessert] {
+        if searchText.isEmpty {
+            return viewModel.dessertList
+        } else {
+            return viewModel.dessertList.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
 }
