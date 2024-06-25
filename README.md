@@ -2,7 +2,7 @@
 ## fetch-dessert
 Fetch - iOS Coding Challenge
 
-Hello! Here is my submission for the Fetch take home project for the iOS Apprenticeship opportunity.
+Hello! Here is my submission for the Fetch take home project for the iOS Apprenticeship opportunity. This is a native iOS application that displays a list of desserts from TheMealDB API and presents each dessert with its respective meal name, instructions, and ingredients/measurements.
 
 ### Prerequisites
 * Xcode - Version 15.4
