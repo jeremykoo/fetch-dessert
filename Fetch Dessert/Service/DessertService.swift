@@ -7,7 +7,12 @@
 
 import Foundation
 
-class DessertService {
+protocol DessertServiceProtocol {
+    func fetchDessertList() async throws -> [Dessert]
+    func fetchDessertDetails(for id: String) async throws -> [DessertDetails]
+}
+
+class DessertService: DessertServiceProtocol {
     
     private let dessertListURL = "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert"
     private let dessertDetailBaseURL = "https://themealdb.com/api/json/v1/1/lookup.php?i="
@@ -31,7 +36,6 @@ class DessertService {
             let values = try JSONDecoder().decode(Response.self, from: data)
             return values.meals
         } catch {
-            print(error.localizedDescription)
             throw DessertError.invalidData
         }
     }

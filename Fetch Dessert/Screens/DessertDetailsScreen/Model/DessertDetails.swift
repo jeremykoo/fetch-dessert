@@ -68,6 +68,18 @@ struct DessertDetails: Decodable, Identifiable, Hashable {
     var strMeasure19: String?
     var strMeasure20: String?
     
+    init(id: String, name: String, thumbnailURL: String, category: String, area: String, instructions: String, strTags: String, ingredientsList: [String], measurementsList: [String]) {
+        self.id = id
+        self.name = name
+        self.thumbnailURL = thumbnailURL
+        self.category = category
+        self.area = area
+        self.instructions = instructions
+        self.strTags = strTags
+        self.ingredientsList = ingredientsList
+        self.measurementsList = measurementsList
+    }
+    
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
@@ -97,8 +109,7 @@ struct DessertDetails: Decodable, Identifiable, Hashable {
                 self.ingredientsList?.append(ingredient)
                 self.measurementsList?.append(measurement)
             } catch {
-                // null
-                print(error.localizedDescription)
+                // null -> continue
             }
         }
     }

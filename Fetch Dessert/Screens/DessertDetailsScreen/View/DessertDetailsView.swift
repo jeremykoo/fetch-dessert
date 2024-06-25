@@ -10,10 +10,10 @@ import SwiftUI
 struct DessertDetailsView: View {
     
     private let dessert: Dessert
-    private let service: DessertService
+    private let service: DessertServiceProtocol
     @ObservedObject var viewModel: DessertDetailsViewModel
     
-    init(service: DessertService, dessert: Dessert) {
+    init(service: DessertServiceProtocol, dessert: Dessert) {
         self.dessert = dessert
         self.service = service
         self.viewModel = DessertDetailsViewModel(service: service, dessertID: dessert.id)
@@ -30,58 +30,11 @@ struct DessertDetailsView: View {
                     .frame(width: 240, height: 200)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 
-                ScrollView(.horizontal) {
-                    HStack(spacing: 12) {
-                        ForEach(details.tags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.footnote)
-                                .padding(10)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(lineWidth: 2)
-                                )
-                                .padding(.vertical, 10)
-                                .foregroundStyle(.yellow)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
+                categoriesView(for: details)
                 
-                VStack {
-                    Text("Ingredients")
-                        .font(.headline)
-                    
-                    LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
-                        ForEach(0..<(details.measurementsList?.count ?? 0), id: \.self) { index in
-                            VStack {
-                                (
-                                    Text(details.ingredientsList?[index] ?? "")
-                                    +
-                                    Text(" - ")
-                                    +
-                                    Text(details.measurementsList?[index] ?? "")
-                                )
-                                .font(.caption)
-                                
-                                DessertImageView(urlString: viewModel.ingredientImageBaseURL + (details.ingredientsList?[index] ?? "") + ".png")
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                                    .padding(.bottom)
-                            }
-                        }
-                    }
-                }
-                .padding([.horizontal, .top])
-                .background(.brown.opacity(0.3))
+                ingredientsView(for: details)
                 
-                VStack(spacing: 12) {
-                    Text("Instructions")
-                        .font(.headline)
-                    
-                    Text(details.instructions ?? "")
-                        .font(.callout)
-                }
-                .padding()
+                instructionsView(for: details)
             }
         }
         .task {
@@ -90,10 +43,72 @@ struct DessertDetailsView: View {
         .navigationTitle(dessert.name)
         .navigationBarTitleDisplayMode(.inline)
     }
+    
+    private func categoriesView(for details: DessertDetails) -> some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 12) {
+                ForEach(details.tags, id: \.self) { tag in
+                    Text(tag)
+                        .font(.footnote)
+                        .padding(10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(lineWidth: 2)
+                        )
+                        .padding(.vertical, 10)
+                        .foregroundStyle(.yellow)
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+    
+    private func ingredientsView(for details: DessertDetails) -> some View {
+        VStack {
+            Text("Ingredients")
+                .font(.headline)
+            
+            LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+                ForEach(0..<(details.measurementsList?.count ?? 0), id: \.self) { index in
+                    VStack {
+                        (
+                            Text(details.ingredientsList?[index] ?? "")
+                            +
+                            Text(" - ")
+                            +
+                            Text(details.measurementsList?[index] ?? "")
+                        )
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                        
+                        DessertImageView(urlString: viewModel.ingredientImageBaseURL + (details.ingredientsList?[index] ?? "") + ".png")
+                            .frame(width: 80, height: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding(.bottom)
+                        
+                        Spacer()
+                    }
+                }
+            }
+        }
+        .padding([.horizontal, .top])
+        .background(.brown.opacity(0.3))
+    }
+    
+    private func instructionsView(for details: DessertDetails) -> some View {
+        VStack(spacing: 12) {
+            Text("Instructions")
+                .font(.headline)
+            
+            Text(details.instructions ?? "")
+                .font(.callout)
+        }
+        .padding()
+    }
 }
 
 #Preview {
     NavigationStack {
-        DessertDetailsView(service: DessertService(), dessert: MockData.sampleDessertItem)
+        DessertDetailsView(service: MockService(), dessert: MockData.sampleDessertItem)
     }
 }

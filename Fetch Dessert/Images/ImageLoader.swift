@@ -26,7 +26,6 @@ class ImageLoader: ObservableObject {
     
     private func loadImage() async {
         if let cached = ImageCache.shared.get(forKey: urlString) {
-//            print("DEBUG: Did fetch image from cache")
             self.image = Image(uiImage: cached)
             return
         }
@@ -35,13 +34,12 @@ class ImageLoader: ObservableObject {
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-//            print("DEBUG: Did receive data from endpoint..")
             
             guard let uiImage = UIImage(data: data) else { return }
             ImageCache.shared.set(uiImage, forKey: urlString)
             self.image = Image(uiImage: uiImage)
         } catch {
-            print("DEBUG: Failed to fetch image with error \(error)")
+            print("Error: Failed to fetch image with error \(error)")
         }
     }
 }

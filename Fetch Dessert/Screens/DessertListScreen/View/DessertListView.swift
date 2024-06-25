@@ -9,10 +9,10 @@ import SwiftUI
 
 struct DessertListView: View {
     @State private var searchText = ""
-    private let service: DessertService
+    private let service: DessertServiceProtocol
     @StateObject var viewModel: DessertViewModel
     
-    init(service: DessertService) {
+    init(service: DessertServiceProtocol) {
         self.service = service
         self._viewModel = StateObject(wrappedValue: DessertViewModel(service: service))
     }
@@ -44,5 +44,5 @@ struct DessertListView: View {
 }
 
 #Preview {
-    DessertListView(service: DessertService())
+    DessertListView(service: MockService())
 }

@@ -11,11 +11,11 @@ import Foundation
 class DessertDetailsViewModel: ObservableObject {
     
     let ingredientImageBaseURL = "https://themealdb.com/images/ingredients/"
-    private let service: DessertService
+    private let service: DessertServiceProtocol
     private let dessertID: String
     @Published var dessertDetails: DessertDetails?
     
-    init(service: DessertService, dessertID: String) {
+    init(service: DessertServiceProtocol, dessertID: String) {
         self.service = service
         self.dessertID = dessertID
     }
@@ -24,7 +24,8 @@ class DessertDetailsViewModel: ObservableObject {
         do {
             dessertDetails = try await service.fetchDessertDetails(for: dessertID).first
         } catch {
-            print(error.localizedDescription)
+            guard let error = error as? DessertError else { return }
+            print("Error: \(error.errorDescription)")
         }
     }
     
